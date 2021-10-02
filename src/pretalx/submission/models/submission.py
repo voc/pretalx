@@ -1,7 +1,9 @@
 import datetime as dt
 import json
+import uuid
 import statistics
 from itertools import repeat
+from contextlib import suppress
 
 from django.conf import settings
 from django.db import models
@@ -21,6 +23,12 @@ from pretalx.common.urls import EventUrls
 from pretalx.common.utils import path_with_hash
 from pretalx.mail.models import QueuedMail
 from pretalx.submission.signals import submission_state_change
+
+INSTANCE_IDENTIFIER = None
+with suppress(Exception):
+    from pretalx.common.models.settings import GlobalSettings
+
+    INSTANCE_IDENTIFIER = GlobalSettings().get_instance_identifier()
 
 
 def generate_invite_code(length=32):
@@ -111,6 +119,14 @@ class Submission(LogMixin, GenerateCode, FileCleanupMixin, models.Model):
 
     created = models.DateTimeField(null=True, auto_now_add=True)
     code = models.CharField(max_length=16, unique=True)
+    guid = models.UUIDField(
+        null=True,
+        verbose_name=_("GUID"),
+        help_text=_(
+            "Unique identifier (UUID) for submissions imported from external systems."
+        ),
+    )
+
     speakers = models.ManyToManyField(
         to="person.User", related_name="submissions", blank=True
     )
@@ -500,6 +516,20 @@ class Submission(LogMixin, GenerateCode, FileCleanupMixin, models.Model):
         self.log_action("pretalx.submission.deleted", person=person, orga=True)
 
     remove.alters_data = True
+
+    def uuid(self, id_suffix=""):
+        """Either a UUID5 calculated from the submission code and the instance
+        identifier and an optional slot id suffix; 
+        or GUID value of imported submission"""
+        if self.guid and not id_suffix:
+            return self.guid
+
+        global INSTANCE_IDENTIFIER
+        if not INSTANCE_IDENTIFIER:
+            from pretalx.common.models.settings import GlobalSettings
+
+            INSTANCE_IDENTIFIER = GlobalSettings().get_instance_identifier()
+        return uuid.uuid5(INSTANCE_IDENTIFIER, self.code + id_suffix)
 
     @cached_property
     def integer_uuid(self):
