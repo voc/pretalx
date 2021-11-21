@@ -20,7 +20,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from django.utils.translation import override
-from django.views.generic import DetailView, ListView, TemplateView, UpdateView, View
+from django.views.generic import DetailView, ListView, TemplateView, UpdateView, CreateView, View
 
 from pretalx.common.exceptions import SubmissionError
 from pretalx.common.mixins.views import (
@@ -481,6 +481,64 @@ class SubmissionContent(
         ) and not self.request.user.has_perm("orga.view_speakers", instance)
         kwargs["read_only"] = kwargs["read_only"] or kwargs["anonymise"]
         return kwargs
+class SubmissionImport(ActionFromUrl, SubmissionViewMixin, CreateView):
+    model = Submission
+    form_class = SubmissionForm
+    template_name = "orga/submission/import.html"
+    permission_required = "orga.create_submission"
+
+    def get_object(self):
+        return None
+
+    @cached_property
+    def _formset(self):
+        formset_class = inlineformset_factory(
+            Submission,
+            Resource,
+            form=ResourceForm,
+            formset=BaseModelFormSet,
+            can_delete=True,
+            extra=0,
+        )
+        submission = self.get_object()
+        return formset_class(
+            self.request.POST if self.request.method == "POST" else None,
+            queryset=submission.resources.all()
+            if submission
+            else Resource.objects.none(),
+            prefix="resource",
+        )
+
+    @context
+    def formset(self):
+        return self._formset
+
+    def dispatch(self, request, *args, **kwargs):
+        super().dispatch(request, *args, **kwargs)
+        submission = self.object
+        data = request.POST.get("data")
+
+
+
+        try:
+            speaker = User.objects.get(email__iexact=email)
+        except User.DoesNotExist:
+            with suppress(Exception):
+                speaker = create_user_as_orga(email, submission=submission, name=name)
+        if not speaker:
+            messages.error(request, _("Please provide a valid email address!"))
+        else:
+            if submission not in speaker.submissions.all():
+                speaker.submissions.add(submission)
+                submission.log_action(
+                    "pretalx.submission.speakers.add", person=request.user, orga=True
+                )
+                messages.success(
+                    request, _("The speaker has been added to the proposal.")
+                )
+            if not speaker.profiles.filter(event=request.event).exists():
+                SpeakerProfile.objects.create(user=speaker, event=request.event)
+        return redirect(submission.orga_urls.content)
 
 
 class SubmissionList(

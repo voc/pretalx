@@ -364,6 +364,11 @@ urlpatterns = [
                     name="submissions.create",
                 ),
                 path(
+                    "submissions/import",
+                    submission.SubmissionImport.as_view(),
+                    name="submissions.import",
+                ),
+                path(
                     "submissions/cards/",
                     cards.SubmissionCards.as_view(),
                     name="submissions.cards",
