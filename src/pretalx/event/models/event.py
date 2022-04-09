@@ -22,7 +22,7 @@ from pretalx.common.phrases import phrases
 from pretalx.common.urls import EventUrls
 from pretalx.common.utils import daterange, path_with_hash
 
-SLUG_CHARS = "a-zA-Z0-9.-"
+SLUG_CHARS = "a-zA-Z0-9."
 
 
 def validate_event_slug_permitted(value):
@@ -158,13 +158,13 @@ class Event(LogMixin, FileCleanupMixin, models.Model):
             RegexValidator(
                 regex=f"^[{SLUG_CHARS}]+$",
                 message=_(
-                    "The slug may only contain letters, numbers, dots and dashes."
+                    "The slug may only contain letters, numbers and dots."
                 ),
             ),
             validate_event_slug_permitted,
         ],
         verbose_name=_("Short form"),
-        help_text=_("The slug may only contain letters, numbers, dots and dashes."),
+        help_text=_("The slug may only contain letters, numbers and dots."),
     )
     organiser = models.ForeignKey(
         to="Organiser",
