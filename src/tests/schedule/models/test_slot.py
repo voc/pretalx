@@ -157,11 +157,38 @@ def test_talkslot_uuid_matches_submission_uuid_for_single_slot():
     assert slot.uuid == slot.submission.uuid
 
 
-def test_talkslot_uuid_is_none_without_submission():
+def test_talkslot_uuid_is_none_for_unsaved_slot_without_submission():
+    slot = TalkSlot(submission=None, schedule=ScheduleFactory())
+
+    assert slot.uuid is None
+
+
+def test_talkslot_break_gets_persistent_guid_on_save():
     schedule = ScheduleFactory()
     break_slot = TalkSlotFactory(submission=None, schedule=schedule, room=None)
 
-    assert break_slot.uuid is None
+    assert isinstance(break_slot.guid, uuid.UUID)
+    assert break_slot.uuid == break_slot.guid
+
+    reloaded = TalkSlot.objects.get(pk=break_slot.pk)
+    assert reloaded.guid == break_slot.guid
+
+
+def test_talkslot_break_guid_is_not_overwritten_on_update():
+    schedule = ScheduleFactory()
+    break_slot = TalkSlotFactory(submission=None, schedule=schedule, room=None)
+    original_guid = break_slot.guid
+
+    break_slot.description = "Moved and renamed"
+    break_slot.save()
+
+    assert break_slot.guid == original_guid
+
+
+def test_talkslot_submission_slot_never_gets_a_guid():
+    slot = TalkSlotFactory()
+
+    assert slot.guid is None
 
 
 def test_talkslot_uuid_differs_per_slot_with_present_multiple_times():

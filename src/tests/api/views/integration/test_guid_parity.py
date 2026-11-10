@@ -108,9 +108,7 @@ def test_api_slot_uuid_matches_frab_guid_with_present_multiple_times(client, eve
     }
 
 
-def test_api_slot_uuid_is_null_for_break_without_submission(
-    client, published_talk_slot
-):
+def test_api_break_slot_uuid_is_its_persistent_guid(client, published_talk_slot):
     event = published_talk_slot.submission.event
     with scopes_disabled():
         room = RoomFactory(event=event)
@@ -126,7 +124,71 @@ def test_api_slot_uuid_is_null_for_break_without_submission(
     response = client.get(event.api_urls.slots + f"{break_slot.pk}/")
 
     assert response.status_code == 200
-    assert response.json()["uuid"] is None
+    assert response.json()["uuid"] == str(break_slot.guid)
+
+
+def test_api_break_slot_uuid_survives_schedule_release_and_move(client, event):
+    with scopes_disabled():
+        room = RoomFactory(event=event)
+        break_slot = TalkSlotFactory(
+            submission=None,
+            room=room,
+            schedule=event.wip_schedule,
+            is_visible=True,
+            slot_type="break",
+            start=event.datetime_from,
+            end=event.datetime_from + dt.timedelta(minutes=30),
+        )
+        original_guid = break_slot.guid
+        with scope(event=event):
+            freeze_schedule(event.wip_schedule, "v1", notify_speakers=False)
+        released_break = event.current_schedule.talks.get(submission=None)
+        assert released_break.pk == break_slot.pk
+        assert released_break.guid == original_guid
+
+        # The next WIP schedule holds a copied row with a new pk, but the same guid.
+        wip_break = event.wip_schedule.talks.get(submission=None)
+        assert wip_break.pk != released_break.pk
+        assert wip_break.guid == original_guid
+
+        # Moving the break (new room, new time) in that WIP schedule...
+        other_room = RoomFactory(event=event)
+        wip_break.room = other_room
+        wip_break.start = event.datetime_from + dt.timedelta(hours=3)
+        wip_break.end = wip_break.start + dt.timedelta(hours=1)
+        wip_break.save()
+
+    response = client.get(event.api_urls.slots + f"{released_break.pk}/")
+
+    # ...does not change the guid of the already-released slot.
+    assert response.status_code == 200
+    assert response.json()["uuid"] == str(original_guid)
+    assert wip_break.guid == original_guid
+
+
+def test_api_blocker_uuid_not_exposed_publicly(client, orga_read_token, event):
+    with scopes_disabled():
+        room = RoomFactory(event=event)
+        blocker = TalkSlotFactory(
+            submission=None,
+            room=room,
+            schedule=event.wip_schedule,
+            is_visible=True,
+            slot_type="blocker",
+            start=event.datetime_from,
+            end=event.datetime_from,
+        )
+
+    anonymous = client.get(event.api_urls.slots + f"{blocker.pk}/")
+    orga = client.get(
+        f"{event.api_urls.slots}?schedule={event.wip_schedule.pk}",
+        headers={"Authorization": f"Token {orga_read_token.token}"},
+    )
+
+    assert anonymous.status_code == 404
+    assert orga.status_code == 200
+    (result,) = orga.json()["results"]
+    assert result["uuid"] == str(blocker.guid)
 
 
 def test_api_slot_uuid_not_leaked_for_invisible_slot_to_anonymous(

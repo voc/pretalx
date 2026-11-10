@@ -89,9 +89,12 @@ class TalkSlotSerializer(FlexFieldsSerializerMixin, PretalxSerializer):
     end = DateTimeField(source="local_end", required=False)
     uuid = UUIDField(
         read_only=True,
-        help_text="A stable UUID5, identical to the guid used for this slot in "
-        "schedule exports. Slots without a submission (breaks, blockers) have "
-        "no uuid.",
+        help_text="A stable identifier for this slot, identical to the guid "
+        "used for this slot in schedule exports. For slots with a submission, "
+        "this is a UUID5 derived from the submission's code. For slots "
+        "without a submission (breaks, blockers), this is a UUID that is "
+        "generated once and carried over across schedule releases, so it "
+        "stays stable even if the slot is moved.",
     )
 
     class Meta:

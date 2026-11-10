@@ -113,11 +113,24 @@ class TalkSlot(PretalxModel):
         help_text=_("When the session ends, if it is currently scheduled"),
     )
     description = I18nCharField(null=True)
+    guid = models.UUIDField(
+        null=True,
+        blank=True,
+        verbose_name=_("GUID"),
+        help_text=_(
+            "A persistent identifier for slots without a submission (breaks, "
+            "blockers). It is generated automatically and carried over across "
+            "schedule releases, so it stays stable even if the slot is moved. "
+            "Slots with a submission use a uuid derived from the submission "
+            "instead, see the ``uuid`` property."
+        ),
+    )
 
     objects = ScopedManager(event="schedule__event", _manager_class=TalkSlotManager)
 
     class Meta:
         ordering = ("start",)
+        unique_together = ("schedule", "guid")
         rules_permissions = {
             "list": is_agenda_visible | orga_can_change_submissions,
             "view": (
@@ -134,6 +147,14 @@ class TalkSlot(PretalxModel):
 
     def __str__(self):
         return f"TalkSlot(event={self.schedule.event.slug}, submission={getattr(self.submission, 'title', None)}, schedule={self.schedule.version})"
+
+    def save(self, *args, **kwargs):
+        if not self.submission_id and not self.guid:
+            self.guid = uuid.uuid4()
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None:
+                kwargs["update_fields"] = {"guid", *update_fields}
+        return super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()
@@ -242,11 +263,18 @@ class TalkSlot(PretalxModel):
 
     @cached_property
     def uuid(self):
-        """A UUID5, calculated from the submission code and the instance identifier.
+        """A stable identifier for this slot, identical to the ``guid`` used in
+        schedule exports.
 
-        This is identical to the ``guid`` used in schedule exports. Slots without
-        a submission (breaks, blockers) have no uuid.
+        For slots with a submission, this is a UUID5 calculated from the
+        submission code and the instance identifier (see
+        :attr:`~pretalx.submission.models.submission.Submission.uuid`). For
+        slots without a submission (breaks, blockers), this is the persistent,
+        automatically generated ``guid`` field, which survives schedule
+        releases even if the slot is moved.
         """
+        if self.guid:
+            return self.guid
         if not self.submission_id:
             return None
         if not self.id_suffix:
