@@ -462,6 +462,7 @@ def test_submission_serializer_fields():
 
     assert set(base.keys()) == {
         "code",
+        "uuid",
         "title",
         "speakers",
         "submission_type",

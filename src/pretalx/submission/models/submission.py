@@ -7,6 +7,7 @@
 # SPDX-FileContributor: luto
 
 import statistics
+import uuid
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -23,6 +24,7 @@ from pretalx.common.language import get_language_tag
 from pretalx.common.models.fields import MarkdownField
 from pretalx.common.models.managers import ScopedManager
 from pretalx.common.models.mixins import GenerateCode, PretalxModel
+from pretalx.common.models.settings import GlobalSettings
 from pretalx.common.text.path import hashed_path
 from pretalx.common.text.phrases import phrases
 from pretalx.common.text.serialize import humanize_duration, serialize_duration
@@ -345,6 +347,15 @@ class Submission(GenerateCode, PretalxModel):
     @property
     def image_url(self):
         return self.image.url if self.image else ""
+
+    @cached_property
+    def uuid(self):
+        """A UUID5, calculated from the submission code and the instance identifier.
+
+        This is identical to the ``guid`` used for single-slot talks in schedule
+        exports; see :attr:`pretalx.schedule.models.slot.TalkSlot.uuid`.
+        """
+        return uuid.uuid5(GlobalSettings().get_instance_identifier(), self.code)
 
     @cached_property
     def editable(self) -> bool:

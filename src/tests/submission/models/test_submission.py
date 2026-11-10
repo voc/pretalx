@@ -1,12 +1,14 @@
 # SPDX-FileCopyrightText: 2026-present Tobias Kunze
 # SPDX-License-Identifier: AGPL-3.0-only WITH LicenseRef-Pretalx-AGPL-3.0-Terms
 import datetime as dt
+import uuid
 
 import pytest
 from django.db import IntegrityError
 from django.utils.timezone import now, timedelta
 from django_scopes import scope
 
+from pretalx.common.models.settings import GlobalSettings
 from pretalx.event.models import Event
 from pretalx.schedule.domain.release import freeze_schedule
 from pretalx.submission.domain.queries.submission import (
@@ -187,6 +189,18 @@ def test_submission_integer_uuid_unique():
     s1 = SubmissionFactory()
     s2 = SubmissionFactory(event=s1.event)
     assert s1.integer_uuid != s2.integer_uuid
+
+
+def test_submission_uuid_is_stable_uuid5_from_code():
+    submission = SubmissionFactory()
+
+    first = submission.uuid
+    del submission.__dict__["uuid"]
+
+    assert first == uuid.uuid5(
+        GlobalSettings().get_instance_identifier(), submission.code
+    )
+    assert submission.uuid == first
 
 
 def test_submission_scores_skip_missing_values():

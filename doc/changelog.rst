@@ -152,6 +152,7 @@ For already released changes, head over here:
 - :bug:`orga:submission` Anonymising a session did not work when the attendee signup feature was enabled.
 - :feature:`admin` The update check page now shows a status badge for every row, so it is easier to see which parts of your installation have updates available.
 - :bug:`orga:email` Clicking the "Send all on this page" button in the outbox did not work and showed a server error instead of sending the emails.
+- :feature:`api` Proposals and talk slots now have a ``uuid`` field, identical to the stable ``guid`` used for the same proposal or slot in schedule exports (frab XML/JSON, XCal). The API root now also returns the instance's ``instance_identifier``, the UUID these guids are derived from, so external tools can compute or verify them without needing a schedule export.
 - :release:`2026.2.1 <2026-07-08>` Bugfix release for pretalx 2026.2. See the `release blog post <https://pretalx.com/p/news/releasing-pretalx-2026-2-0/>`_.
 - :bug:`orga` A template was malformed and rendered only halfway correct in the admin area.
 - :release:`2026.2.0 <2026-07-08>` See the `release blog post <https://pretalx.com/p/news/releasing-pretalx-2026-2-0/>`_.

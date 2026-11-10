@@ -129,6 +129,7 @@ def test_talk_slot_serializer_fields():
 
     assert set(data.keys()) == {
         "id",
+        "uuid",
         "room",
         "start",
         "end",

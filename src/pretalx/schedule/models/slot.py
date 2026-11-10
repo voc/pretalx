@@ -242,7 +242,15 @@ class TalkSlot(PretalxModel):
 
     @cached_property
     def uuid(self):
-        """A UUID5, calculated from the submission code and the instance identifier."""
+        """A UUID5, calculated from the submission code and the instance identifier.
+
+        This is identical to the ``guid`` used in schedule exports. Slots without
+        a submission (breaks, blockers) have no uuid.
+        """
+        if not self.submission_id:
+            return None
+        if not self.id_suffix:
+            return self.submission.uuid
         global INSTANCE_IDENTIFIER  # noqa: PLW0603 -- module-level cache for instance identifier
         if not INSTANCE_IDENTIFIER:
             INSTANCE_IDENTIFIER = GlobalSettings().get_instance_identifier()

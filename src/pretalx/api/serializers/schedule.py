@@ -11,6 +11,7 @@ from rest_framework.serializers import (
     DateTimeField,
     SerializerMethodField,
     SlugRelatedField,
+    UUIDField,
 )
 
 from pretalx.api.documentation import extend_schema_field
@@ -86,11 +87,18 @@ class ScheduleReleaseSerializer(PretalxSerializer):
 class TalkSlotSerializer(FlexFieldsSerializerMixin, PretalxSerializer):
     submission = SlugRelatedField(slug_field="code", read_only=True)
     end = DateTimeField(source="local_end", required=False)
+    uuid = UUIDField(
+        read_only=True,
+        help_text="A stable UUID5, identical to the guid used for this slot in "
+        "schedule exports. Slots without a submission (breaks, blockers) have "
+        "no uuid.",
+    )
 
     class Meta:
         model = TalkSlot
         fields = [
             "id",
+            "uuid",
             "room",
             "start",
             "end",

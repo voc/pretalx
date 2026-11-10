@@ -8,7 +8,7 @@ from pathlib import Path
 
 from rest_flex_fields.serializers import FlexFieldsSerializerMixin
 from rest_framework import serializers
-from rest_framework.serializers import HiddenField, SerializerMethodField
+from rest_framework.serializers import HiddenField, SerializerMethodField, UUIDField
 
 from pretalx.api.documentation import extend_schema_field
 from pretalx.api.serializers.defaults import CurrentEventDefault
@@ -202,6 +202,11 @@ class SubmissionSerializer(FlexFieldsSerializerMixin, PretalxSerializer):
     resources = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
     signup_status = serializers.CharField(read_only=True, allow_null=True)
+    uuid = UUIDField(
+        read_only=True,
+        help_text="A stable UUID5, identical to the guid used for this proposal "
+        "(and for its talk slot, if it only has a single one) in schedule exports.",
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -297,6 +302,7 @@ class SubmissionSerializer(FlexFieldsSerializerMixin, PretalxSerializer):
         model = Submission
         fields = [
             "code",
+            "uuid",
             "title",
             "speakers",
             "submission_type",

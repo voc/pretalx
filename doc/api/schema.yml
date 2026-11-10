@@ -5291,8 +5291,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         identifier:
           type: string
       required:
@@ -5318,8 +5319,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         identifier:
           type: string
       required:
@@ -5342,8 +5344,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         identifier:
           type: string
       required:
@@ -5363,8 +5366,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         identifier:
           type: string
       required:
@@ -5842,8 +5846,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
       required:
       - answer
       - id
@@ -5861,8 +5866,9 @@ components:
           title: Response
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
       required:
       - answer
     NullEnum:
@@ -6333,8 +6339,9 @@ components:
           title: Field required
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         tracks:
           type: array
           items:
@@ -6355,15 +6362,17 @@ components:
             type: integer
         min_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Minimum length
           description: Minimum text length in characters or words (set in CfP settings).
         max_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Maximum length
           description: Maximum text length in characters or words (set in CfP settings).
@@ -6401,15 +6410,17 @@ components:
           title: Maximum value
         min_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Minimum number of options
           description: Minimum number of options that have to be selected.
         max_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Maximum number of options
           description: Maximum number of options that can be selected.
@@ -6494,8 +6505,9 @@ components:
           title: Field required
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         tracks:
           type: array
           items:
@@ -6516,15 +6528,17 @@ components:
             $ref: '#/components/schemas/NestedAnswerOption'
         min_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Minimum length
           description: Minimum text length in characters or words (set in CfP settings).
         max_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Maximum length
           description: Maximum text length in characters or words (set in CfP settings).
@@ -6562,15 +6576,17 @@ components:
           title: Maximum value
         min_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Minimum number of options
           description: Minimum number of options that have to be selected.
         max_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Maximum number of options
           description: Maximum number of options that can be selected.
@@ -6671,8 +6687,9 @@ components:
           title: Field required
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         tracks:
           type: array
           items:
@@ -6693,15 +6710,17 @@ components:
             $ref: '#/components/schemas/NestedAnswerOption'
         min_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Minimum length
           description: Minimum text length in characters or words (set in CfP settings).
         max_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Maximum length
           description: Maximum text length in characters or words (set in CfP settings).
@@ -6739,15 +6758,17 @@ components:
           title: Maximum value
         min_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Minimum number of options
           description: Minimum number of options that have to be selected.
         max_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Maximum number of options
           description: Maximum number of options that can be selected.
@@ -6844,8 +6865,9 @@ components:
           title: Field required
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         tracks:
           type: array
           items:
@@ -6866,15 +6888,17 @@ components:
             $ref: '#/components/schemas/NestedAnswerOptionRequest'
         min_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Minimum length
           description: Minimum text length in characters or words (set in CfP settings).
         max_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Maximum length
           description: Maximum text length in characters or words (set in CfP settings).
@@ -6912,15 +6936,17 @@ components:
           title: Maximum value
         min_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Minimum number of options
           description: Minimum number of options that have to be selected.
         max_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Maximum number of options
           description: Maximum number of options that can be selected.
@@ -7014,8 +7040,9 @@ components:
           title: Field required
         position:
           type: integer
-          maximum: 2147483647
-          minimum: -2147483648
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
         tracks:
           type: array
           items:
@@ -7036,15 +7063,17 @@ components:
             $ref: '#/components/schemas/NestedAnswerOptionRequest'
         min_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Minimum length
           description: Minimum text length in characters or words (set in CfP settings).
         max_length:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           title: Maximum length
           description: Maximum text length in characters or words (set in CfP settings).
@@ -7082,15 +7111,17 @@ components:
           title: Maximum value
         min_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Minimum number of options
           description: Minimum number of options that have to be selected.
         max_options:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Maximum number of options
           description: Maximum number of options that can be selected.
@@ -7338,14 +7369,16 @@ components:
             room.
         capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           description: How many people can fit in the room?
         position:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
         hidden:
           type: boolean
@@ -7389,14 +7422,16 @@ components:
             room.
         capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           description: How many people can fit in the room?
         position:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
         hidden:
           type: boolean
@@ -7443,14 +7478,16 @@ components:
             room.
         capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           description: How many people can fit in the room?
         position:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
         hidden:
           type: boolean
@@ -7479,10 +7516,19 @@ components:
           type: string
         api_version:
           type: string
+        instance_identifier:
+          type: string
+          format: uuid
+          description: 'A UUID that is unique to, and stable for, this pretalx instance.
+            It is used, together with a proposal''s code, to calculate the stable
+            UUIDs (``uuid``/``guid``) of proposals and talk slots, both in the API
+            and in schedule exports. It is not a secret: it is already embedded in
+            every public schedule export.'
         urls:
           $ref: '#/components/schemas/RootUrls'
       required:
       - api_version
+      - instance_identifier
       - name
       - urls
       - version
@@ -7850,6 +7896,12 @@ components:
         code:
           type: string
           readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: A stable UUID5, identical to the guid used for this proposal
+            (and for its talk slot, if it only has a single one) in schedule exports.
         title:
           type: string
           title: Proposal title
@@ -7885,8 +7937,9 @@ components:
           description: Defaults to the submission type’s duration
         slot_count:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           description: How often this session takes place.
         attendee_signup_required:
           type: boolean
@@ -7895,8 +7948,9 @@ components:
           description: Override whether attendees must sign up to attend this session.
         attendee_signup_capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Attendee capacity
           description: Override the room capacity for this session.
@@ -7942,6 +7996,7 @@ components:
       - submission_type
       - tags
       - title
+      - uuid
     SubmissionOrga:
       type: object
       description: |-
@@ -7953,6 +8008,12 @@ components:
         code:
           type: string
           readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: A stable UUID5, identical to the guid used for this proposal
+            (and for its talk slot, if it only has a single one) in schedule exports.
         title:
           type: string
           title: Proposal title
@@ -7987,8 +8048,9 @@ components:
           description: Defaults to the submission type’s duration
         slot_count:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           description: How often this session takes place.
         attendee_signup_required:
           type: boolean
@@ -7997,8 +8059,9 @@ components:
           description: Override whether attendees must sign up to attend this session.
         attendee_signup_capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Attendee capacity
           description: Override the room capacity for this session.
@@ -8112,6 +8175,7 @@ components:
       - submission_type
       - title
       - updated
+      - uuid
     SubmissionOrgaRequest:
       type: object
       description: |-
@@ -8145,8 +8209,9 @@ components:
           description: Defaults to the submission type’s duration
         slot_count:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           description: How often this session takes place.
         attendee_signup_required:
           type: boolean
@@ -8155,8 +8220,9 @@ components:
           description: Override whether attendees must sign up to attend this session.
         attendee_signup_capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Attendee capacity
           description: Override the room capacity for this session.
@@ -8243,8 +8309,9 @@ components:
           description: Defaults to the submission type’s duration
         slot_count:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           description: How often this session takes place.
         attendee_signup_required:
           type: boolean
@@ -8253,8 +8320,9 @@ components:
           description: Override whether attendees must sign up to attend this session.
         attendee_signup_capacity:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 1
+          format: int64
           nullable: true
           title: Attendee capacity
           description: Override the room capacity for this session.
@@ -8309,8 +8377,9 @@ components:
           $ref: '#/components/schemas/Multi-language string'
         default_duration:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           description: Duration in minutes
         deadline:
           type: string
@@ -8344,8 +8413,9 @@ components:
           $ref: '#/components/schemas/Multi-language string'
         default_duration:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           description: Duration in minutes
         deadline:
           type: string
@@ -8402,8 +8472,9 @@ components:
             code.
         maximum_uses:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           description: Number of times this access code can be used to submit a proposal.
             Leave empty for no limit.
@@ -8455,8 +8526,9 @@ components:
             code.
         maximum_uses:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           description: Number of times this access code can be used to submit a proposal.
             Leave empty for no limit.
@@ -8489,9 +8561,9 @@ components:
         is_public:
           type: boolean
           title: Show tag publicly
-          description: Public tags can be selected by submitters in the CfP if you
-            activate the tags field. In a future release of pretalx, public tags may
-            also be shown in the public schedule.
+          description: Public tags are shown in the schedule and on session pages.
+            Public tags can be selected by submitters in the CfP if you activate the
+            tags field.
       required:
       - color
       - id
@@ -8517,9 +8589,9 @@ components:
         is_public:
           type: boolean
           title: Show tag publicly
-          description: Public tags can be selected by submitters in the CfP if you
-            activate the tags field. In a future release of pretalx, public tags may
-            also be shown in the public schedule.
+          description: Public tags are shown in the schedule and on session pages.
+            Public tags can be selected by submitters in the CfP if you activate the
+            tags field.
       required:
       - color
       - tag
@@ -8534,6 +8606,13 @@ components:
         id:
           type: integer
           readOnly: true
+        uuid:
+          type: string
+          format: uuid
+          readOnly: true
+          description: A stable UUID5, identical to the guid used for this slot in
+            schedule exports. Slots without a submission (breaks, blockers) have no
+            uuid.
         room:
           type: integer
           nullable: true
@@ -8567,6 +8646,7 @@ components:
       - id
       - schedule
       - submission
+      - uuid
     TalkSlotRequest:
       type: object
       description: |-
@@ -8777,8 +8857,9 @@ components:
           maxLength: 7
         position:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           description: The position field is used to determine the order that tracks
             are displayed in (lowest first).
@@ -8817,8 +8898,9 @@ components:
           maxLength: 7
         position:
           type: integer
-          maximum: 2147483647
+          maximum: 9223372036854775807
           minimum: 0
+          format: int64
           nullable: true
           description: The position field is used to determine the order that tracks
             are displayed in (lowest first).

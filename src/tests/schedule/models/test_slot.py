@@ -6,6 +6,7 @@ import uuid
 import pytest
 from django_scopes import scope
 
+from pretalx.common.models.settings import GlobalSettings
 from pretalx.schedule.models.slot import TalkSlot
 from tests.factories import (
     AttendeeSignupFactory,
@@ -148,6 +149,39 @@ def test_talkslot_uuid_is_stable_uuid5():
     assert isinstance(first, uuid.UUID)
     assert first.version == 5
     assert slot.uuid == first
+
+
+def test_talkslot_uuid_matches_submission_uuid_for_single_slot():
+    slot = TalkSlotFactory()
+
+    assert slot.uuid == slot.submission.uuid
+
+
+def test_talkslot_uuid_is_none_without_submission():
+    schedule = ScheduleFactory()
+    break_slot = TalkSlotFactory(submission=None, schedule=schedule, room=None)
+
+    assert break_slot.uuid is None
+
+
+def test_talkslot_uuid_differs_per_slot_with_present_multiple_times():
+    slot1 = TalkSlotFactory(
+        submission__event__feature_flags={"present_multiple_times": True}
+    )
+    slot2 = TalkSlotFactory(
+        submission=slot1.submission,
+        schedule=slot1.schedule,
+        start=slot1.start + dt.timedelta(hours=2),
+        end=slot1.end + dt.timedelta(hours=2),
+    )
+
+    assert slot1.uuid != slot2.uuid
+    assert {slot1.uuid, slot2.uuid} == {
+        uuid.uuid5(
+            GlobalSettings().get_instance_identifier(), slot1.submission.code + suffix
+        )
+        for suffix in ("-0", "-1")
+    }
 
 
 def test_talkslot_ordering_by_start():
